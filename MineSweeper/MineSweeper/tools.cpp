@@ -1,12 +1,12 @@
 #include"needings.h"
 
-/*µÃµ½¸÷¸ö²ÎÊý*/
+/*ï¿½Ãµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 void mine_sweeper::get_mode_and_initialize() {
 	initgraph(500, 400);
-	settextstyle(int(CELL_SIZE) - 1, 0, _T("ËÎÌå"));
-	/*´ý¶¨*/
+	settextstyle(int(CELL_SIZE) - 1, 0, _T("ï¿½ï¿½ï¿½ï¿½"));
+	/*ï¿½ï¿½ï¿½ï¿½*/
 	//outtextxy(2 * CELL_SIZE, 11 * CELL_SIZE, _T("Customize"));
-	/*´ý¶¨*/
+	/*ï¿½ï¿½ï¿½ï¿½*/
 	enum { _OUT, _EASY, _MEDIUM, _EXPERT };
 	int pos = _OUT;
 	int u_pos = _OUT;
@@ -91,7 +91,7 @@ void mine_sweeper::get_mode_and_initialize() {
 	status.resize(board_x, vector<int>(board_y));
 }
 
-/*Ëæ»úÉú³ÉÀ×µÄÎ»ÖÃ£¬±£Ö¤µã»÷Î»ÖÃÖÜÎ§Ò»¶¨ÎÞÀ×£¬Ò»¶¨ÎÞÎ»ÖÃÖØ¸´µÄÀ×*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×µï¿½Î»ï¿½Ã£ï¿½ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½ï¿½Î§Ò»ï¿½ï¿½ï¿½ï¿½ï¿½×£ï¿½Ò»ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½*/
 void mine_sweeper::random_form() {
 	vector<pair<int, int>>mines;
 	srand(unsigned(time(0)));
@@ -119,7 +119,7 @@ void mine_sweeper::random_form() {
 			y = 0;
 	for (int i = 0; i < mines_num; i++)
 		board[mines[i].first][mines[i].second] = 9;
-	/*¸ñµãÎª9´ú±í´ËµãÎªÀ×*/
+	/*ï¿½ï¿½ï¿½Îª9ï¿½ï¿½ï¿½ï¿½ï¿½Ëµï¿½Îªï¿½ï¿½*/
 	for (int i = 0; i < mines_num; i++) {
 		int x = mines[i].first;
 		int y = mines[i].second;
@@ -145,19 +145,19 @@ void mine_sweeper::random_form() {
 			j > 9 ? j = 9 : j;
 }
 
-/*´òÓ¡³ö´øÑÕÉ«µÄÀ×Çø*/
+/*ï¿½ï¿½Ó¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 void mine_sweeper::print_frame() {
 
 	initgraph((board_y + 6) * CELL_SIZE, (board_x + 5) * CELL_SIZE);
 	setlinestyle(PS_SOLID, 1);
 	setlinecolor(WHITE);
-	/*»æÖÆºáÏß*/
+	/*ï¿½ï¿½ï¿½Æºï¿½ï¿½ï¿½*/
 	for (int i = 0; i <= board_x; ++i)
 		line(CELL_SIZE, (i + 2) * CELL_SIZE, CELL_SIZE * (board_y + 1), (i + 2) * CELL_SIZE);
-	/*»æÖÆÊúÏß*/
+	/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 	for (int i = 0; i <= board_y; ++i)
 		line((i + 1) * CELL_SIZE, CELL_SIZE * 2, (i + 1) * CELL_SIZE, CELL_SIZE * (board_x + 2));
-	/*ÎÒÀ´µ÷É«£¡*/
+	/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É«ï¿½ï¿½*/
 	COLORREF ORANGE = HSVtoRGB(40, 1, 1);
 	for (int x = 0; x < board_x; x++)
 		for (int y = 0; y < board_y; y++) {
@@ -170,10 +170,10 @@ void mine_sweeper::print_frame() {
 	show_notice();
 }
 
-/*¹ÜÀíÃ¿Ò»´ÎµÄÊó±êÊÂ¼þ*/
+/*ï¿½ï¿½ï¿½ï¿½Ã¿Ò»ï¿½Îµï¿½ï¿½ï¿½ï¿½ï¿½Â¼ï¿½*/
 void mine_sweeper::control_by_mouse() {
-	/*ÉèÖÃ´óÐ¡ÎªCELL_SIZE-1*/
-	settextstyle(int(CELL_SIZE) - 1, 0, _T("ËÎÌå"));
+	/*ï¿½ï¿½ï¿½Ã´ï¿½Ð¡ÎªCELL_SIZE-1*/
+	settextstyle(int(CELL_SIZE) - 1, 0, _T("ï¿½ï¿½ï¿½ï¿½"));
 	ExMessage msg;
 	while (1) {
 		msg = getmessage(EX_MOUSE);
@@ -199,15 +199,15 @@ void mine_sweeper::control_by_mouse() {
 	end_manage();
 }
 
-/*Êó±êÒÆ¶¯£¿ÔÚÕâÀï£¡*/
+/*ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï£¡*/
 void mine_sweeper::move() {
-	/*ÔÚ×ó¿ÕÒ»ÁÐ£¬ÔÚÉÏ¿ÕÁ½ÐÐ*/
+	/*ï¿½ï¿½ï¿½ï¿½ï¿½Ò»ï¿½Ð£ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ï¿½ï¿½ï¿½ï¿½*/
 
-	/*ÒÔÏÂxÓëy±íÊ¾ÒÔÊúÖ±·½ÏòÎªx£¬Ë®Æ½·½ÏòÎªy*/
+	/*ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½yï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ï¿½Ö±ï¿½ï¿½ï¿½ï¿½Îªxï¿½ï¿½Ë®Æ½ï¿½ï¿½ï¿½ï¿½Îªy*/
 	int x = stay_y / CELL_SIZE - 2;
 	int y = stay_x / CELL_SIZE - 1;
-	/*Óë¸Õ²Å²»ÏàÍ¬£¬±íÃ÷ÒÆ¶¯ÁËÊó±êµÄÎ»ÖÃ*/
-	/*ÇÒÉÏÒ»´ÎÒÆ¶¯Î»ÖÃ±ØÐë´¦ÓÚÕý³£×´Ì¬*/
+	/*ï¿½ï¿½Õ²Å²ï¿½ï¿½ï¿½Í¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½*/
+	/*ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½Æ¶ï¿½Î»ï¿½Ã±ï¿½ï¿½ë´¦ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬*/
 	if ((x != just_moved_x || y != just_moved_y) && status[just_moved_x][just_moved_y] == normal) {
 		COLORREF ORANGE = HSVtoRGB(40, 1, 1);
 		if ((just_moved_x + just_moved_y) % 2)
@@ -216,7 +216,7 @@ void mine_sweeper::move() {
 			setfillcolor(COLOR_2);
 		fillrectangle((just_moved_y + 1) * CELL_SIZE, (just_moved_x + 2) * CELL_SIZE, (just_moved_y + 2) * CELL_SIZE, (just_moved_x + 3) * CELL_SIZE);
 	}
-	/*Êó±êµ±Ç°Î»ÖÃ±ä°×*/
+	/*ï¿½ï¿½êµ±Ç°Î»ï¿½Ã±ï¿½ï¿½*/
 	if (0 <= x && x < board_x && 0 <= y && y < board_y && status[x][y] == normal) {
 		setfillcolor(WHITE);
 		fillrectangle((y + 1) * CELL_SIZE, (x + 2) * CELL_SIZE, (y + 2) * CELL_SIZE, (x + 3) * CELL_SIZE);
@@ -225,20 +225,20 @@ void mine_sweeper::move() {
 	setbkcolor(BLACK);
 	settextcolor(WHITE);
 	if (x < 0 || x >= board_x || y < 0 || y >= board_y)
-		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[µ±Ç°Î»ÖÃ]: ·Ç·¨    "));
+		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[ï¿½ï¿½Ç°Î»ï¿½ï¿½]: ï¿½Ç·ï¿½    "));
 	else {
 		if (status[x][y] == normal)
-			outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[µ±Ç°Î»ÖÃ]: ºÏ·¨    "));
+			outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[ï¿½ï¿½Ç°Î»ï¿½ï¿½]: ï¿½Ï·ï¿½    "));
 		if (status[x][y] == cleared)
-			outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[µ±Ç°Î»ÖÃ]: ÒÑÇå³ý"));
+			outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[ï¿½ï¿½Ç°Î»ï¿½ï¿½]: ï¿½ï¿½ï¿½ï¿½ï¿½"));
 		if (status[x][y] == marked)
-			outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[µ±Ç°Î»ÖÃ]: ÒÑ±ê¼Ç"));
+			outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[ï¿½ï¿½Ç°Î»ï¿½ï¿½]: ï¿½Ñ±ï¿½ï¿½"));
 		just_moved_x = x;
 		just_moved_y = y;
 	}
 }
 
-/*µ¥»÷ÓÒ¼üÒÔ±ê¼ÇµØÀ×*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½Ò¼ï¿½ï¿½Ô±ï¿½Çµï¿½ï¿½ï¿½*/
 void mine_sweeper::flag() {
 	int x = stay_y / CELL_SIZE - 2;
 	int y = stay_x / CELL_SIZE - 1;
@@ -250,10 +250,10 @@ void mine_sweeper::flag() {
 		setbkcolor(COLOR_2);
 	settextcolor(BLUE);
 	if (status[x][y] == normal) {
-		outtextxy((y + 1) * CELL_SIZE + 1, (x + 2) * CELL_SIZE + 1, _T("¡ï"));
+		outtextxy((y + 1) * CELL_SIZE + 1, (x + 2) * CELL_SIZE + 1, _T("ï¿½ï¿½"));
 		setbkcolor(BLACK);
 		settextcolor(WHITE);
-		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[µ±Ç°Î»ÖÃ]: ÒÑ±ê¼Ç"));
+		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[ï¿½ï¿½Ç°Î»ï¿½ï¿½]: ï¿½Ñ±ï¿½ï¿½"));
 		status[x][y] = marked;
 		picked_num++;
 		show_notice();
@@ -262,37 +262,37 @@ void mine_sweeper::flag() {
 		outtextxy((y + 1) * CELL_SIZE + 1, (x + 2) * CELL_SIZE + 1, _T("  "));
 		setbkcolor(BLACK);
 		settextcolor(WHITE);
-		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[µ±Ç°Î»ÖÃ]: ºÏ·¨  "));
+		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[ï¿½ï¿½Ç°Î»ï¿½ï¿½]: ï¿½Ï·ï¿½  "));
 		status[x][y] = normal;
 		picked_num--;
 		show_notice();
 	}
 }
 
-/*µ¥»÷×ó¼üÒÔÅÅÀ×*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 void mine_sweeper::click() {
 	int x = stay_y / CELL_SIZE - 2;
 	int y = stay_x / CELL_SIZE - 1;
 	if (0 > x || x >= board_x || 0 > y || y >= board_y) return;
 	if (status[x][y] != normal) return;
-	/*É¨À×Ê§°Ü*/
+	/*É¨ï¿½ï¿½Ê§ï¿½ï¿½*/
 	if (board[x][y] == 9) 
 		is_over = true;
-	/*µã»÷µãËÄÖÜÓÐÀ×*/
+	/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 	else if (board[x][y] != 0) {
 		setfillcolor(BLACK);
 		fillrectangle((y + 1) * CELL_SIZE, (x + 2) * CELL_SIZE, (y + 2) * CELL_SIZE, (x + 3) * CELL_SIZE);
 		outtextxy(int((y + 1.25) * CELL_SIZE), (x + 2) * CELL_SIZE + 1, char(board[x][y] + 48));
 		status[x][y] = cleared;
 	}
-	/*µã»÷´¦ËÄÖÜÎÞÀ×*/
+	/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 	else {
 		get_empty_cleared(x, y);
 	}
 	return;
 }
 
-/*Á¬ÐøÏûÏûÏû*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 void mine_sweeper::get_empty_cleared(int x, int y) {
 	if (status[x][y] != normal) return;
 	if (board[x][y] == 0) {
@@ -321,29 +321,30 @@ void mine_sweeper::get_empty_cleared(int x, int y) {
 		fillrectangle((y + 1) * CELL_SIZE, (x + 2) * CELL_SIZE, (y + 2) * CELL_SIZE, (x + 3) * CELL_SIZE);
 		outtextxy(int((y + 1.25) * CELL_SIZE), (x + 2) * CELL_SIZE + 1, char(board[x][y] + 48));
 		status[x][y] = cleared;
+		/* just for test*/
 	}
 	return;
 }
 
-/*´òÓ¡ÌáÊ¾ÐÅÏ¢£¨ºÃÂé·³£©*/
+/*ï¿½ï¿½Ó¡ï¿½ï¿½Ê¾ï¿½ï¿½Ï¢ï¿½ï¿½ï¿½ï¿½ï¿½é·³ï¿½ï¿½*/
 void mine_sweeper::show_notice() {
 	float i = 0;
-	settextstyle(int(CELL_SIZE) - 1, 0, _T("ËÎÌå"));
-	outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, _T("Ò»¹²"));
+	settextstyle(int(CELL_SIZE) - 1, 0, _T("ï¿½ï¿½ï¿½ï¿½"));
+	outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, _T("Ò»ï¿½ï¿½"));
 	i += 4;
 	string num = to_string(mines_num);
 	for (size_t j = 0; j < num.size(); j++, i++)
 		outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, num[j]);
-	outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, _T("¸öÀ×£¬Ê£Óà"));
+	outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, _T("ï¿½ï¿½ï¿½×£ï¿½Ê£ï¿½ï¿½"));
 	i += 10;
 	num = to_string(mines_num - picked_num);
 	for (size_t j = 0; j < num.size(); j++, i++)
 		outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, num[j]);
-	outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, _T("¸ö    "));
+	outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, _T("ï¿½ï¿½    "));
 	i += 6;
 }
 
-/*ÅÐ¶ÏÀ×¾Ö£¬ÓÎÏ·ÊÇ·ñ½áÊø*/
+/*ï¿½Ð¶ï¿½ï¿½×¾Ö£ï¿½ï¿½ï¿½Ï·ï¿½Ç·ï¿½ï¿½ï¿½ï¿½*/
 void mine_sweeper::justice() {
 	for (int x = 0; x < board_x; x++)
 		for (int y = 0; y < board_y; y++)
@@ -360,9 +361,9 @@ void mine_sweeper::end_manage() {
 	int x = stay_y / CELL_SIZE - 2;
 	int y = stay_x / CELL_SIZE - 1;
 	if (is_win == true)
-		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("¹§Ï²Äú£¡ÍêÊ¤£¡      "));
+		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("ï¿½ï¿½Ï²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê¤ï¿½ï¿½      "));
 	else {
-		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("ºÃ¿ÉÏ§£¬Äú²ÈÀ×ÁË "));
+		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("ï¿½Ã¿ï¿½Ï§ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "));
 		for (int i = 0; i < board_x; i++)
 			for (int j = 0; j < board_y; j++) {
 				if (status[i][j] == cleared) {
@@ -394,13 +395,13 @@ void mine_sweeper::end_manage() {
 	}
 }
 
-/*ÒÑ¾­½áÊøÁË£¬ÄãÊÇ·ñÒª¼ÌÐø£¿*/
+/*ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë£ï¿½ï¿½ï¿½ï¿½Ç·ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 bool mine_sweeper::is_to_continue() {
 	ExMessage msg;
 	setbkcolor(BLACK);
 	settextcolor(WHITE);
-	outtextxy(int((board_y + 2) * CELL_SIZE), (board_x - 4) * CELL_SIZE, _T("½áÊø°É"));
-	outtextxy(int((board_y + 2) * CELL_SIZE), (board_x)*CELL_SIZE, _T("Ïë¼ÌÐø"));
+	outtextxy(int((board_y + 2) * CELL_SIZE), (board_x - 4) * CELL_SIZE, _T("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
+	outtextxy(int((board_y + 2) * CELL_SIZE), (board_x)*CELL_SIZE, _T("ï¿½ï¿½ï¿½ï¿½ï¿½"));
 	while (1) {
 		msg = getmessage(EX_MOUSE);
 		int x = msg.x / CELL_SIZE;
@@ -409,22 +410,22 @@ bool mine_sweeper::is_to_continue() {
 			if (board_y + 1 < x && x < board_y + 5 && board_x - 5 < y && y < board_x - 3) {
 				setbkcolor(WHITE);
 				settextcolor(BLACK);
-				outtextxy((board_y + 2) * CELL_SIZE, (board_x - 4) * CELL_SIZE, _T("½áÊø°É"));
+				outtextxy((board_y + 2) * CELL_SIZE, (board_x - 4) * CELL_SIZE, _T("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
 			}
 			else {
 				setbkcolor(BLACK);
 				settextcolor(WHITE);
-				outtextxy((board_y + 2) * CELL_SIZE, (board_x - 4) * CELL_SIZE, _T("½áÊø°É"));
+				outtextxy((board_y + 2) * CELL_SIZE, (board_x - 4) * CELL_SIZE, _T("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
 			}
 			if (board_y + 1 < x && x < board_y + 5 && board_x - 1 < y && y < board_x + 1) {
 				setbkcolor(WHITE);
 				settextcolor(BLACK);
-				outtextxy((board_y + 2) * CELL_SIZE, board_x * CELL_SIZE, _T("Ïë¼ÌÐø"));
+				outtextxy((board_y + 2) * CELL_SIZE, board_x * CELL_SIZE, _T("ï¿½ï¿½ï¿½ï¿½ï¿½"));
 			}
 			else {
 				setbkcolor(BLACK);
 				settextcolor(WHITE);
-				outtextxy((board_y + 2) * CELL_SIZE, board_x * CELL_SIZE, _T("Ïë¼ÌÐø"));
+				outtextxy((board_y + 2) * CELL_SIZE, board_x * CELL_SIZE, _T("ï¿½ï¿½ï¿½ï¿½ï¿½"));
 			}
 		}
 		if (msg.message == WM_LBUTTONDOWN) {
@@ -435,10 +436,10 @@ bool mine_sweeper::is_to_continue() {
 	}
 }
 
-/*Çå³ý×´Ì¬£¬ÖØ¸´½øÐÐÓÎÏ·*/
+/*ï¿½ï¿½ï¿½×´Ì¬ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·*/
 void mine_sweeper::clear() {
 	stay_x = -7;
-	stay_y = -7;//Éú
+	stay_y = -7;//ï¿½ï¿½
 	just_moved_x = 0;
 	just_moved_y = 0;
 	is_over = false;
