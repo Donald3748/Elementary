@@ -1,12 +1,12 @@
 #include"needings.h"
 
-/*�õ���������*/
+/*得到各个参数*/
 void mine_sweeper::get_mode_and_initialize() {
 	initgraph(500, 400);
-	settextstyle(int(CELL_SIZE) - 1, 0, _T("����"));
-	/*����*/
+	settextstyle(int(CELL_SIZE) - 1, 0, _T("宋体"));
+	/*待定*/
 	//outtextxy(2 * CELL_SIZE, 11 * CELL_SIZE, _T("Customize"));
-	/*����*/
+	/*待定*/
 	enum { _OUT, _EASY, _MEDIUM, _EXPERT };
 	int pos = _OUT;
 	int u_pos = _OUT;
@@ -91,7 +91,7 @@ void mine_sweeper::get_mode_and_initialize() {
 	status.resize(board_x, vector<int>(board_y));
 }
 
-/*��������׵�λ�ã���֤���λ����Χһ�����ף�һ����λ���ظ�����*/
+/*随机生成雷的位置，保证点击位置周围一定无雷，一定无位置重复的雷*/
 void mine_sweeper::random_form() {
 	vector<pair<int, int>>mines;
 	srand(unsigned(time(0)));
@@ -119,7 +119,7 @@ void mine_sweeper::random_form() {
 			y = 0;
 	for (int i = 0; i < mines_num; i++)
 		board[mines[i].first][mines[i].second] = 9;
-	/*���Ϊ9�����˵�Ϊ��*/
+	/*格点为9代表此点为雷*/
 	for (int i = 0; i < mines_num; i++) {
 		int x = mines[i].first;
 		int y = mines[i].second;
@@ -145,19 +145,19 @@ void mine_sweeper::random_form() {
 			j > 9 ? j = 9 : j;
 }
 
-/*��ӡ������ɫ������*/
+/*打印出带颜色的雷区*/
 void mine_sweeper::print_frame() {
 
 	initgraph((board_y + 6) * CELL_SIZE, (board_x + 5) * CELL_SIZE);
 	setlinestyle(PS_SOLID, 1);
 	setlinecolor(WHITE);
-	/*���ƺ���*/
+	/*绘制横线*/
 	for (int i = 0; i <= board_x; ++i)
 		line(CELL_SIZE, (i + 2) * CELL_SIZE, CELL_SIZE * (board_y + 1), (i + 2) * CELL_SIZE);
-	/*��������*/
+	/*绘制竖线*/
 	for (int i = 0; i <= board_y; ++i)
 		line((i + 1) * CELL_SIZE, CELL_SIZE * 2, (i + 1) * CELL_SIZE, CELL_SIZE * (board_x + 2));
-	/*������ɫ��*/
+	/*我来调色！*/
 	COLORREF ORANGE = HSVtoRGB(40, 1, 1);
 	for (int x = 0; x < board_x; x++)
 		for (int y = 0; y < board_y; y++) {
@@ -170,10 +170,10 @@ void mine_sweeper::print_frame() {
 	show_notice();
 }
 
-/*����ÿһ�ε�����¼�*/
+/*管理每一次的鼠标事件*/
 void mine_sweeper::control_by_mouse() {
-	/*���ô�СΪCELL_SIZE-1*/
-	settextstyle(int(CELL_SIZE) - 1, 0, _T("����"));
+	/*设置大小为CELL_SIZE-1*/
+	settextstyle(int(CELL_SIZE) - 1, 0, _T("宋体"));
 	ExMessage msg;
 	while (1) {
 		msg = getmessage(EX_MOUSE);
@@ -199,15 +199,15 @@ void mine_sweeper::control_by_mouse() {
 	end_manage();
 }
 
-/*����ƶ��������*/
+/*鼠标移动？在这里！*/
 void mine_sweeper::move() {
-	/*�����һ�У����Ͽ�����*/
+	/*在左空一列，在上空两行*/
 
-	/*����x��y��ʾ����ֱ����Ϊx��ˮƽ����Ϊy*/
+	/*以下x与y表示以竖直方向为x，水平方向为y*/
 	int x = stay_y / CELL_SIZE - 2;
 	int y = stay_x / CELL_SIZE - 1;
-	/*��ղŲ���ͬ�������ƶ�������λ��*/
-	/*����һ���ƶ�λ�ñ��봦������״̬*/
+	/*与刚才不相同，表明移动了鼠标的位置*/
+	/*且上一次移动位置必须处于正常状态*/
 	if ((x != just_moved_x || y != just_moved_y) && status[just_moved_x][just_moved_y] == normal) {
 		COLORREF ORANGE = HSVtoRGB(40, 1, 1);
 		if ((just_moved_x + just_moved_y) % 2)
@@ -216,7 +216,7 @@ void mine_sweeper::move() {
 			setfillcolor(COLOR_2);
 		fillrectangle((just_moved_y + 1) * CELL_SIZE, (just_moved_x + 2) * CELL_SIZE, (just_moved_y + 2) * CELL_SIZE, (just_moved_x + 3) * CELL_SIZE);
 	}
-	/*��굱ǰλ�ñ��*/
+	/*鼠标当前位置变白*/
 	if (0 <= x && x < board_x && 0 <= y && y < board_y && status[x][y] == normal) {
 		setfillcolor(WHITE);
 		fillrectangle((y + 1) * CELL_SIZE, (x + 2) * CELL_SIZE, (y + 2) * CELL_SIZE, (x + 3) * CELL_SIZE);
@@ -225,20 +225,20 @@ void mine_sweeper::move() {
 	setbkcolor(BLACK);
 	settextcolor(WHITE);
 	if (x < 0 || x >= board_x || y < 0 || y >= board_y)
-		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[��ǰλ��]: �Ƿ�    "));
+		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[当前位置]: 非法    "));
 	else {
 		if (status[x][y] == normal)
-			outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[��ǰλ��]: �Ϸ�    "));
+			outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[当前位置]: 合法    "));
 		if (status[x][y] == cleared)
-			outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[��ǰλ��]: �����"));
+			outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[当前位置]: 已清除"));
 		if (status[x][y] == marked)
-			outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[��ǰλ��]: �ѱ��"));
+			outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[当前位置]: 已标记"));
 		just_moved_x = x;
 		just_moved_y = y;
 	}
 }
 
-/*�����Ҽ��Ա�ǵ���*/
+/*单击右键以标记地雷*/
 void mine_sweeper::flag() {
 	int x = stay_y / CELL_SIZE - 2;
 	int y = stay_x / CELL_SIZE - 1;
@@ -250,10 +250,10 @@ void mine_sweeper::flag() {
 		setbkcolor(COLOR_2);
 	settextcolor(BLUE);
 	if (status[x][y] == normal) {
-		outtextxy((y + 1) * CELL_SIZE + 1, (x + 2) * CELL_SIZE + 1, _T("��"));
+		outtextxy((y + 1) * CELL_SIZE + 1, (x + 2) * CELL_SIZE + 1, _T("★"));
 		setbkcolor(BLACK);
 		settextcolor(WHITE);
-		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[��ǰλ��]: �ѱ��"));
+		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[当前位置]: 已标记"));
 		status[x][y] = marked;
 		picked_num++;
 		show_notice();
@@ -262,37 +262,37 @@ void mine_sweeper::flag() {
 		outtextxy((y + 1) * CELL_SIZE + 1, (x + 2) * CELL_SIZE + 1, _T("  "));
 		setbkcolor(BLACK);
 		settextcolor(WHITE);
-		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[��ǰλ��]: �Ϸ�  "));
+		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("[当前位置]: 合法  "));
 		status[x][y] = normal;
 		picked_num--;
 		show_notice();
 	}
 }
 
-/*�������������*/
+/*单击左键以排雷*/
 void mine_sweeper::click() {
 	int x = stay_y / CELL_SIZE - 2;
 	int y = stay_x / CELL_SIZE - 1;
 	if (0 > x || x >= board_x || 0 > y || y >= board_y) return;
 	if (status[x][y] != normal) return;
-	/*ɨ��ʧ��*/
+	/*扫雷失败*/
 	if (board[x][y] == 9) 
 		is_over = true;
-	/*�������������*/
+	/*点击点四周有雷*/
 	else if (board[x][y] != 0) {
 		setfillcolor(BLACK);
 		fillrectangle((y + 1) * CELL_SIZE, (x + 2) * CELL_SIZE, (y + 2) * CELL_SIZE, (x + 3) * CELL_SIZE);
 		outtextxy(int((y + 1.25) * CELL_SIZE), (x + 2) * CELL_SIZE + 1, char(board[x][y] + 48));
 		status[x][y] = cleared;
 	}
-	/*�������������*/
+	/*点击处四周无雷*/
 	else {
 		get_empty_cleared(x, y);
 	}
 	return;
 }
 
-/*����������*/
+/*连续消消消*/
 void mine_sweeper::get_empty_cleared(int x, int y) {
 	if (status[x][y] != normal) return;
 	if (board[x][y] == 0) {
@@ -321,30 +321,29 @@ void mine_sweeper::get_empty_cleared(int x, int y) {
 		fillrectangle((y + 1) * CELL_SIZE, (x + 2) * CELL_SIZE, (y + 2) * CELL_SIZE, (x + 3) * CELL_SIZE);
 		outtextxy(int((y + 1.25) * CELL_SIZE), (x + 2) * CELL_SIZE + 1, char(board[x][y] + 48));
 		status[x][y] = cleared;
-		/* just for test*/
 	}
 	return;
 }
 
-/*��ӡ��ʾ��Ϣ�����鷳��*/
+/*打印提示信息（好麻烦）*/
 void mine_sweeper::show_notice() {
 	float i = 0;
-	settextstyle(int(CELL_SIZE) - 1, 0, _T("����"));
-	outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, _T("һ��"));
+	settextstyle(int(CELL_SIZE) - 1, 0, _T("宋体"));
+	outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, _T("一共"));
 	i += 4;
 	string num = to_string(mines_num);
 	for (size_t j = 0; j < num.size(); j++, i++)
 		outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, num[j]);
-	outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, _T("���ף�ʣ��"));
+	outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, _T("个雷，剩余"));
 	i += 10;
 	num = to_string(mines_num - picked_num);
 	for (size_t j = 0; j < num.size(); j++, i++)
 		outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, num[j]);
-	outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, _T("��    "));
+	outtextxy(int((i / 2 + 1) * CELL_SIZE), CELL_SIZE, _T("个    "));
 	i += 6;
 }
 
-/*�ж��׾֣���Ϸ�Ƿ����*/
+/*判断雷局，游戏是否结束*/
 void mine_sweeper::justice() {
 	for (int x = 0; x < board_x; x++)
 		for (int y = 0; y < board_y; y++)
@@ -361,9 +360,9 @@ void mine_sweeper::end_manage() {
 	int x = stay_y / CELL_SIZE - 2;
 	int y = stay_x / CELL_SIZE - 1;
 	if (is_win == true)
-		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("��ϲ������ʤ��      "));
+		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("恭喜您！完胜！      "));
 	else {
-		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("�ÿ�ϧ���������� "));
+		outtextxy(CELL_SIZE, int((board_x + 2.25) * CELL_SIZE), _T("好可惜，您踩雷了 "));
 		for (int i = 0; i < board_x; i++)
 			for (int j = 0; j < board_y; j++) {
 				if (status[i][j] == cleared) {
@@ -395,13 +394,13 @@ void mine_sweeper::end_manage() {
 	}
 }
 
-/*�Ѿ������ˣ����Ƿ�Ҫ������*/
+/*已经结束了，你是否要继续？*/
 bool mine_sweeper::is_to_continue() {
 	ExMessage msg;
 	setbkcolor(BLACK);
 	settextcolor(WHITE);
-	outtextxy(int((board_y + 2) * CELL_SIZE), (board_x - 4) * CELL_SIZE, _T("������"));
-	outtextxy(int((board_y + 2) * CELL_SIZE), (board_x)*CELL_SIZE, _T("�����"));
+	outtextxy(int((board_y + 2) * CELL_SIZE), (board_x - 4) * CELL_SIZE, _T("结束吧"));
+	outtextxy(int((board_y + 2) * CELL_SIZE), (board_x)*CELL_SIZE, _T("想继续"));
 	while (1) {
 		msg = getmessage(EX_MOUSE);
 		int x = msg.x / CELL_SIZE;
@@ -410,22 +409,22 @@ bool mine_sweeper::is_to_continue() {
 			if (board_y + 1 < x && x < board_y + 5 && board_x - 5 < y && y < board_x - 3) {
 				setbkcolor(WHITE);
 				settextcolor(BLACK);
-				outtextxy((board_y + 2) * CELL_SIZE, (board_x - 4) * CELL_SIZE, _T("������"));
+				outtextxy((board_y + 2) * CELL_SIZE, (board_x - 4) * CELL_SIZE, _T("结束吧"));
 			}
 			else {
 				setbkcolor(BLACK);
 				settextcolor(WHITE);
-				outtextxy((board_y + 2) * CELL_SIZE, (board_x - 4) * CELL_SIZE, _T("������"));
+				outtextxy((board_y + 2) * CELL_SIZE, (board_x - 4) * CELL_SIZE, _T("结束吧"));
 			}
 			if (board_y + 1 < x && x < board_y + 5 && board_x - 1 < y && y < board_x + 1) {
 				setbkcolor(WHITE);
 				settextcolor(BLACK);
-				outtextxy((board_y + 2) * CELL_SIZE, board_x * CELL_SIZE, _T("�����"));
+				outtextxy((board_y + 2) * CELL_SIZE, board_x * CELL_SIZE, _T("想继续"));
 			}
 			else {
 				setbkcolor(BLACK);
 				settextcolor(WHITE);
-				outtextxy((board_y + 2) * CELL_SIZE, board_x * CELL_SIZE, _T("�����"));
+				outtextxy((board_y + 2) * CELL_SIZE, board_x * CELL_SIZE, _T("想继续"));
 			}
 		}
 		if (msg.message == WM_LBUTTONDOWN) {
@@ -436,10 +435,10 @@ bool mine_sweeper::is_to_continue() {
 	}
 }
 
-/*���״̬���ظ�������Ϸ*/
+/*清除状态，重复进行游戏*/
 void mine_sweeper::clear() {
 	stay_x = -7;
-	stay_y = -7;//��
+	stay_y = -7;//生
 	just_moved_x = 0;
 	just_moved_y = 0;
 	is_over = false;

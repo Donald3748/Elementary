@@ -11,11 +11,11 @@ const COLORREF COLOR_2 = HSVtoRGB(40, 1, 1);
 
 class mine_sweeper {
 private:
-	/* 0-8 Ö¸¸Ã¿éÖÜÎ§À×Êı¡¢9±íÊ¾¸Ã¿éÎªÀ×*/
+	/* 0-8 æŒ‡è¯¥å—å‘¨å›´é›·æ•°ã€9è¡¨ç¤ºè¯¥å—ä¸ºé›·*/
 	vector<vector<int>> board;
 	vector<vector<int>> status;
 	int stay_x = -7;
-	int stay_y = -7;//Éú
+	int stay_y = -7;//ç”Ÿ
 	int just_moved_x = 0;
 	int just_moved_y = 0;
 	bool is_over = false;
