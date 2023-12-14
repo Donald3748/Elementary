@@ -11,14 +11,14 @@
 using namespace std;
 
 #define BOARD_SIZE  12
-enum { nothing, black, white };//1ÎªºÚÆå£¬2Îª°×Æå
+enum { nothing, black, white };//1Îªï¿½ï¿½ï¿½å£¬2Îªï¿½ï¿½ï¿½ï¿½
 
 int board[BOARD_SIZE][BOARD_SIZE];
 int my_flag;
 int enemy_flag;
-int status;//1ÎªMy_flagµÄÊ¤Àû£¬2¾ÍÊäÁË
+int status;//1ÎªMy_flagï¿½ï¿½Ê¤ï¿½ï¿½ï¿½ï¿½2ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 int cont;
-/*Æå×Ó¸ñÊ½£¬´¢´æÆå×Ó×ø±ê²¢Ìá¹©Ò»¸ö¸³ÖµÖØÔØ£¬±ãÓÚ¸ü¸ÄÆå×Ó´¢´æÎ»ÖÃ*/
+/*ï¿½ï¿½ï¿½Ó¸ï¿½Ê½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê²¢ï¿½á¹©Ò»ï¿½ï¿½ï¿½ï¿½Öµï¿½ï¿½ï¿½Ø£ï¿½ï¿½ï¿½ï¿½Ú¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó´ï¿½ï¿½ï¿½Î»ï¿½ï¿½*/
 struct Command {
 	int x;
 	int y;
@@ -30,13 +30,13 @@ struct Command {
 	}
 
 };
-/*ËÑË÷µÄÄ£°å´®£¬Èý¸öÊý¾Ý³ÉÔ±·Ö±ð¶ÔÓ¦´®Ä£°å£¬nextÊý×é(±ãÓÚkmpËÑË÷)£¬ÏàÓ¦·ÖÊý*/
+/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½å´®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý³ï¿½Ô±ï¿½Ö±ï¿½ï¿½Ó¦ï¿½ï¿½Ä£ï¿½å£¬nextï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½kmpï¿½ï¿½ï¿½ï¿½)ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½ï¿½ï¿½ï¿½*/
 struct Template {
 	string format;
 	int next[6];
 	int score;
 };
-/*const ±ê¼ÇµÄ´¢´æÄ£°å´®µÄÊý×é£¬±ãÓÚËÑË÷*/
+/*const ï¿½ï¿½ÇµÄ´ï¿½ï¿½ï¿½Ä£ï¿½å´®ï¿½ï¿½ï¿½ï¿½ï¿½é£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 const Template patterns[16] = {
 	{"11111", {-1,-1,-1,-1,-1,0},50000},
 	{"011110",{-1,0,0,0,0,-1},4320},
@@ -58,16 +58,16 @@ const Template patterns[16] = {
 
 
 bool kmp_search(const string&, const string&, const int next[]);
-// ¶¨Òå³£Á¿
+// ï¿½ï¿½ï¿½å³£ï¿½ï¿½
 const int CELL_SIZE = 40;
-// »æÖÆÎå×ÓÆåÆåÅÌ
+// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 void draw_board() {
-	// ³õÊ¼»¯»æÍ¼´°¿Ú
+	// ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½Í¼ï¿½ï¿½ï¿½ï¿½
 	
 	initgraph(CELL_SIZE * (BOARD_SIZE + 2), CELL_SIZE * (BOARD_SIZE + 4));
 	setfillcolor(BROWN);
 	fillrectangle(CELL_SIZE, 3 * CELL_SIZE, 13 * CELL_SIZE, 15 * CELL_SIZE);
-	// »æÖÆÆåÅÌÍø¸ñ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	setbkcolor(WHITE);
 	setlinestyle(PS_SOLID, 1);
 	setlinecolor(WHITE);
@@ -77,15 +77,15 @@ void draw_board() {
 		line((i + 1) * CELL_SIZE, 3 * CELL_SIZE, (i + 1) * CELL_SIZE, CELL_SIZE * (BOARD_SIZE + 3));
 	}
 }
-// ÂäºÚ×ÓµÄ·½·¨£¬xºÍy·Ö±ð±íÊ¾Âä×ÓµÄ×ø±ê
+// ï¿½ï¿½ï¿½ï¿½ÓµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½yï¿½Ö±ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½
 void put_black(int x, int y) {
-	// »æÖÆºÚ×Ó
+	// ï¿½ï¿½ï¿½Æºï¿½ï¿½ï¿½
 	setfillcolor(BLACK);
 	fillcircle(int((x + 1.5) * CELL_SIZE), int((y + 0.5) * CELL_SIZE), CELL_SIZE / 2);
 }
-// Âä°××ÓµÄ·½·¨£¬xºÍy·Ö±ð±íÊ¾Âä×ÓµÄ×ø±ê
+// ï¿½ï¿½ï¿½ï¿½ÓµÄ·ï¿½ï¿½ï¿½ï¿½ï¿½xï¿½ï¿½yï¿½Ö±ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½ï¿½ï¿½
 void put_white(int x, int y) {
-	// »æÖÆ°××Ó
+	// ï¿½ï¿½ï¿½Æ°ï¿½ï¿½ï¿½
 	setfillcolor(WHITE);
 	fillcircle(int((x + 1.5) * CELL_SIZE), int((y + 0.5) * CELL_SIZE), CELL_SIZE / 2);
 }
@@ -93,9 +93,9 @@ char change(int i) {
 	if (i < 10) return char(i + 48);
 	else  return char(i + 55);
 }
-// Êó±êÑ¡ÔñÆåÉ«
+// ï¿½ï¿½ï¿½Ñ¡ï¿½ï¿½ï¿½ï¿½É«
 inline void indicate(int f, int s) {
-	settextstyle(int(0.5 * CELL_SIZE), 0, _T("ËÎÌå"));
+	settextstyle(int(0.5 * CELL_SIZE), 0, _T("ï¿½ï¿½ï¿½ï¿½"));
 	setbkcolor(BLACK);
 	settextcolor(WHITE);
 	for (int i = 0; i < BOARD_SIZE; i++) {
@@ -108,17 +108,17 @@ inline void indicate(int f, int s) {
 	}
 	if (f == 1) {
 		outtextxy(3 * CELL_SIZE, 1 * CELL_SIZE, _T("        "));
-		outtextxy(3 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("  ÎÒÏÈ  "));
+		outtextxy(3 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("  ï¿½ï¿½ï¿½ï¿½  "));
 		outtextxy(3 * CELL_SIZE, 2 * CELL_SIZE, _T("        "));
 	}
 	if (f == 2) {
 		outtextxy(9 * CELL_SIZE, 1 * CELL_SIZE, _T("        "));
-		outtextxy(9 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("  ÄãÏÈ  "));
+		outtextxy(9 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("  ï¿½ï¿½ï¿½ï¿½  "));
 		outtextxy(9 * CELL_SIZE, 2 * CELL_SIZE, _T("        "));
 	}
 }
 void pre_prepare() {
-	// Êä³öºº×Ö
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	indicate(1, 1);
 	indicate(2, 1);
 	ExMessage msg;
@@ -151,11 +151,11 @@ void pre_prepare() {
 	outtextxy(9 * CELL_SIZE, 2 * CELL_SIZE, _T("        "));
 	settextcolor(WHITE);
 	if (my_flag == white)
-		outtextxy(6 * CELL_SIZE, 2 * CELL_SIZE, _T("ÄúÖ´ºÚÆå"));
+		outtextxy(6 * CELL_SIZE, 2 * CELL_SIZE, _T("ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½"));
 	if (my_flag == black)
-		outtextxy(6 * CELL_SIZE, 2 * CELL_SIZE, _T("ÄúÖ´°×Æå"));
+		outtextxy(6 * CELL_SIZE, 2 * CELL_SIZE, _T("ï¿½ï¿½Ö´ï¿½ï¿½ï¿½ï¿½"));
 }
-// ÅÐ¶Ï¶Ô¾ÖÊÇ·ñ½áÊø
+// ï¿½Ð¶Ï¶Ô¾ï¿½ï¿½Ç·ï¿½ï¿½ï¿½ï¿½
 bool is_over() {
 	string lines[54];
 	for (int i = 0; i < BOARD_SIZE; i++)
@@ -194,30 +194,31 @@ void show_answer() {
 	settextcolor(BLACK);
 	outtextxy(6 * CELL_SIZE, int(0.5 * CELL_SIZE), _T("        "));
 	if (status == 1)
-		outtextxy(6 * CELL_SIZE, 1 * CELL_SIZE, _T(" ÄúÊäÁË "));
+		outtextxy(6 * CELL_SIZE, 1 * CELL_SIZE, _T(" ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ "));
 	if (status == 2)
-		outtextxy(6 * CELL_SIZE, 1 * CELL_SIZE, _T(" ÄúÓ®ÁË "));
+		outtextxy(6 * CELL_SIZE, 1 * CELL_SIZE, _T(" ï¿½ï¿½Ó®ï¿½ï¿½ "));
 	outtextxy(6 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("        "));
 } 
+//test
 bool cccontinue() {
 	if (status == 1) {
 		setbkcolor(BLACK);
 		settextcolor(WHITE);
-		outtextxy(CELL_SIZE, int(15.1 * CELL_SIZE), _T("¹§Ï²Äã£¡Äú±»ºÝºÝ±¡É´£¡¶øÎÒÖ»ÓÃÁË"));
+		outtextxy(CELL_SIZE, int(15.1 * CELL_SIZE), _T("ï¿½ï¿½Ï²ï¿½ã£¡ï¿½ï¿½ï¿½ï¿½ï¿½ÝºÝ±ï¿½É´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö»ï¿½ï¿½ï¿½ï¿½"));
 		outtextxy(9 * CELL_SIZE, int(15.1 * CELL_SIZE), char(cont / 10 + 48));
 		outtextxy(int(9.25 * CELL_SIZE), int(15.1 * CELL_SIZE), char(cont % 10 + 48));
-		outtextxy(int(9.5 * CELL_SIZE), int(15.1 * CELL_SIZE), _T("²½"));
+		outtextxy(int(9.5 * CELL_SIZE), int(15.1 * CELL_SIZE), _T("ï¿½ï¿½"));
 	}
 	if (status == 2) {
 		setbkcolor(BLACK);
 		settextcolor(WHITE);
-		outtextxy(CELL_SIZE, int(2.5 * CELL_SIZE), _T("¿É¶ñ£¡¾¹È»±»ÄãÓ®ÁË"));
+		outtextxy(CELL_SIZE, int(2.5 * CELL_SIZE), _T("ï¿½É¶ñ£¡¾ï¿½È»ï¿½ï¿½ï¿½ï¿½Ó®ï¿½ï¿½"));
 	}
 	outtextxy(9 * CELL_SIZE, CELL_SIZE, _T("        "));
-	outtextxy(9 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("µãÎÒÍË³ö"));
+	outtextxy(9 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½"));
 	outtextxy(9 * CELL_SIZE, 2 * CELL_SIZE, _T("        "));
 	outtextxy(3 * CELL_SIZE, CELL_SIZE, _T("        "));
-	outtextxy(3 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("¼ÌÐøÓÎÏ·"));
+	outtextxy(3 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·"));
 	outtextxy(3 * CELL_SIZE, 2 * CELL_SIZE, _T("        "));
 	ExMessage msg;
 	while (1) {
@@ -226,7 +227,7 @@ bool cccontinue() {
 			setbkcolor(WHITE);
 			settextcolor(BLACK);
 			outtextxy(9 * CELL_SIZE, CELL_SIZE, _T("        "));
-			outtextxy(9 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("µãÎÒÍË³ö"));
+			outtextxy(9 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½"));
 			outtextxy(9 * CELL_SIZE, 2 * CELL_SIZE, _T("        "));
 			if (msg.message == WM_LBUTTONDOWN)
 				return 0;
@@ -236,14 +237,14 @@ bool cccontinue() {
 			setbkcolor(BLACK);
 			settextcolor(WHITE);
 			outtextxy(9 * CELL_SIZE, CELL_SIZE, _T("        "));
-			outtextxy(9 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("µãÎÒÍË³ö"));
+			outtextxy(9 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("ï¿½ï¿½ï¿½ï¿½ï¿½Ë³ï¿½"));
 			outtextxy(9 * CELL_SIZE, 2 * CELL_SIZE, _T("        "));
 		}
 		if (3 * CELL_SIZE < msg.x && msg.x < 5 * CELL_SIZE && 1 * CELL_SIZE < msg.y && msg.y < 2.5 * CELL_SIZE) {
 			setbkcolor(WHITE);
 			settextcolor(BLACK);
 			outtextxy(3 * CELL_SIZE, CELL_SIZE, _T("        "));
-			outtextxy(3 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("¼ÌÐøÓÎÏ·"));
+			outtextxy(3 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·"));
 			outtextxy(3 * CELL_SIZE, 2 * CELL_SIZE, _T("        "));
 			if (msg.message == WM_LBUTTONDOWN) {
 				return 1;
@@ -253,7 +254,7 @@ bool cccontinue() {
 			setbkcolor(BLACK);
 			settextcolor(WHITE);
 			outtextxy(3 * CELL_SIZE, CELL_SIZE, _T("        "));
-			outtextxy(3 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("¼ÌÐøÓÎÏ·"));
+			outtextxy(3 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï·"));
 			outtextxy(3 * CELL_SIZE, 2 * CELL_SIZE, _T("        "));
 		}
 	}
@@ -261,43 +262,43 @@ bool cccontinue() {
 
 
 
-/*kmpËÑË÷£¬Ð§ÂÊ¸ü¸ß*/
+/*kmpï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½Ê¸ï¿½ï¿½ï¿½*/
 bool kmp_search(const string& s, const string& p, const int next[]) {
 	int i = 0;
 	int j = 0;
 	int s_size = s.size();
 	int p_size = p.size();
 	while (i < s_size && j < p_size) {
-		/*Èç¹ûj == -1£¬»òÕßµ±Ç°×Ö·ûÆ¥Åä³É¹¦£¨¼´s[i] == p[j]£©£¬¶¼Áîi++£¬j++*/
+		/*ï¿½ï¿½ï¿½j == -1ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½Ç°ï¿½Ö·ï¿½Æ¥ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½s[i] == p[j]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½i++ï¿½ï¿½j++*/
 		if (j == -1 || s[i] == p[j]) {
 			i++;
 			j++;
 		}
 		else {
-			/*Èç¹ûj != -1£¬ÇÒµ±Ç°×Ö·ûÆ¥ÅäÊ§°Ü£¨¼´s[i] != p[j]£©£¬ÔòÁî i ²»±ä£¬j = next[j]*/
+			/*ï¿½ï¿½ï¿½j != -1ï¿½ï¿½ï¿½Òµï¿½Ç°ï¿½Ö·ï¿½Æ¥ï¿½ï¿½Ê§ï¿½Ü£ï¿½ï¿½ï¿½s[i] != p[j]ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ i ï¿½ï¿½ï¿½ä£¬j = next[j]*/
 			j = next[j];
 		}
 	}
 	if (j == p_size)
 		return true;
-	return false;//Ã»ÕÒµ½·µ»Øfalse
+	return false;//Ã»ï¿½Òµï¿½ï¿½ï¿½ï¿½ï¿½false
 }
-/*¶ÔÒ»µãµÄ¹ÀÖµº¯Êý£¬½öÉúÐ§ÓÚÎ´Âä×Óµã*/
+/*ï¿½ï¿½Ò»ï¿½ï¿½Ä¹ï¿½Öµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð§ï¿½ï¿½Î´ï¿½ï¿½ï¿½Óµï¿½*/
 int evaluate_point(Command& p) {
-	int result = 0;//×îÖÕ·ÖÊý
-	int i;//Ñ­»·»ù×¼
+	int result = 0;//ï¿½ï¿½ï¿½Õ·ï¿½ï¿½ï¿½
+	int i;//Ñ­ï¿½ï¿½ï¿½ï¿½×¼
 	int role = my_flag;
 
 	string my_lines[4];
 	string enemy_lines[4];
-	//ÌáÇ°·ÖÅä¿Õ¼ä£¬±ãÓÚ²åÈëÊ±Ìá¸ßÐ§ÂÊ
+	//ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Õ¼ä£¬ï¿½ï¿½ï¿½Ú²ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½Ð§ï¿½ï¿½
 	for (auto& line : my_lines) {
 		line.reserve(15);
 	}
 	for (auto& line : enemy_lines) {
 		line.reserve(15);
 	}
-	//  "|"µÄ²¿·Ö
+	//  "|"ï¿½Ä²ï¿½ï¿½ï¿½
 	int bottom = max(0, p.x - 5);
 	int roof = min(BOARD_SIZE - 1, p.x + 5);
 	for (i = bottom; i <= roof; i++) {
@@ -310,7 +311,7 @@ int evaluate_point(Command& p) {
 			enemy_lines[0].push_back('1');
 		}
 	}
-	//  "--"µÄ²¿·Ö
+	//  "--"ï¿½Ä²ï¿½ï¿½ï¿½
 	bottom = max(0, p.y - 5);
 	roof = min(BOARD_SIZE - 1, p.y + 5);
 	for (i = bottom; i <= roof; i++) {
@@ -323,7 +324,7 @@ int evaluate_point(Command& p) {
 			enemy_lines[1].push_back('1');
 		}
 	}
-	//  "\"µÄ²¿·Ö
+	//  "\"ï¿½Ä²ï¿½ï¿½ï¿½
 	bottom = -min(min(p.x, p.y), 5);
 	roof = min(min(BOARD_SIZE - 1 - p.x, BOARD_SIZE - 1 - p.y), 5);
 	for (i = bottom; i <= roof; i++) {
@@ -336,7 +337,7 @@ int evaluate_point(Command& p) {
 			enemy_lines[2].push_back('1');
 		}
 	}
-	//  "/"µÄ²¿·Ö
+	//  "/"ï¿½Ä²ï¿½ï¿½ï¿½
 	bottom = -min(min(BOARD_SIZE - 1 - p.x, p.y), 5);
 	roof = min(min(p.x, BOARD_SIZE - 1 - p.y), 5);
 	for (i = bottom; i <= roof; i++) {
@@ -350,18 +351,18 @@ int evaluate_point(Command& p) {
 		}
 	}
 
-	/*ËÑË÷²¿·Ö, ÔÚËÄ¸ö·½ÏòÉÏµÄÉ¨Ãè´®ÖÐËÑË÷Ä£°å´®£¬ËÑË÷³É¹¦±ã¼ÓÏàÓ¦µÄ·ÖÊý*/
+	/*ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½É¨ï¿½è´®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½å´®ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½É¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó¦ï¿½Ä·ï¿½ï¿½ï¿½*/
 	for (i = 0; i < 4; i++)
 		for (int j = 0; j < 16; j++) {
 			if (kmp_search(my_lines[i], patterns[j].format, patterns[j].next))
-				result += (patterns[j].score + patterns[j].score / 10);//¶Ô¼º·½ÓÐÀûµÄ¾ÖÃæ¼Ó·Ö¸ü¶à£¬Õ¼¸ü´óÈ¨ÖØ
+				result += (patterns[j].score + patterns[j].score / 10);//ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½Ó·Ö¸ï¿½ï¿½à£¬Õ¼ï¿½ï¿½ï¿½ï¿½È¨ï¿½ï¿½
 			if (kmp_search(enemy_lines[i], patterns[j].format, patterns[j].next))
 				result += patterns[j].score;
 		}
 	return result;
-	/*·µ»Ø·ÖÊýÊÇ¶Ô¼º·½·ÖÊýÓë¶ÔµÐ·½·ÖÊýÖ®ºÍ£¨¶Ô¼º·½ÓÐÀûµÄ¾ÖÃæºÍ¶Ô¶Ô·½ÓÐÀûµÄ¾ÖÃæ¶¼ÖØÒª£¬µ«ÊÇ×Ô¼ºµÄ·ÖÊý¸üÖØÒª£¬Òò´ËÈ¨ÖØ¸ü´ó£©*/
+	/*ï¿½ï¿½ï¿½Ø·ï¿½ï¿½ï¿½ï¿½Ç¶Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÔµÐ·ï¿½ï¿½ï¿½ï¿½ï¿½Ö®ï¿½Í£ï¿½ï¿½Ô¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½ï¿½Í¶Ô¶Ô·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¾ï¿½ï¿½æ¶¼ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô¼ï¿½ï¿½Ä·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½ï¿½ï¿½ï¿½È¨ï¿½Ø¸ï¿½ï¿½ï¿½*/
 }
-/*ÅÐ¶ÏÒ»¸öÎ´Âä×ÓµãÖÜÎ§°Ë¸öºÏ·¨µãÊÇ·ñÒÑ¾­ÓÐÂä×Ó*/
+/*ï¿½Ð¶ï¿½Ò»ï¿½ï¿½Î´ï¿½ï¿½ï¿½Óµï¿½ï¿½ï¿½Î§ï¿½Ë¸ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ñ¾ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 inline bool is_around(int i, int j) {
 	if (i > 0) if (board[i - 1][j]) return true;//up
 	if (j > 0) if (board[i][j - 1]) return true;//left
@@ -373,19 +374,19 @@ inline bool is_around(int i, int j) {
 	if (i < BOARD_SIZE - 1 && j < BOARD_SIZE - 1) if (board[i + 1][j + 1]) return true;//down,right
 	return false;
 }
-/*ÕÒ³ö¿ÉÄÜµÄÂä×Óµã£¬·µ»Ø·ÖÊý×î¸ßµÄÇ°Îå¸ö*/
+/*ï¿½Ò³ï¿½ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½Óµã£¬ï¿½ï¿½ï¿½Ø·ï¿½ï¿½ï¿½ï¿½ï¿½ßµï¿½Ç°ï¿½ï¿½ï¿½*/
 multimap<int, Command, greater<int>> generate_possible_moves() {
 	Command possible_move;
-	stack<Command>possible_moves;//´¢´æ¿ÉÄÜµÄÒÆ¶¯
-	multimap<int, Command, greater<int>> ordered_possible_moves;//ÀûÓÃmultimap½¨Á¢¹ØÓÚ·ÖÊýµÄ½µÐòÅÅÐò£¨multimapµÄÔ­ÒòÊÇÓÐ¿ÉÄÜÓÐ¶à¸öµã·ÖÊýÏàÍ¬£©
+	stack<Command>possible_moves;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Üµï¿½ï¿½Æ¶ï¿½
+	multimap<int, Command, greater<int>> ordered_possible_moves;//ï¿½ï¿½ï¿½ï¿½multimapï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ú·ï¿½ï¿½ï¿½ï¿½Ä½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½multimapï¿½ï¿½Ô­ï¿½ï¿½ï¿½ï¿½ï¿½Ð¿ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í¬ï¿½ï¿½
 	for (int i = 0; i < BOARD_SIZE; i++)
 		for (int j = 0; j < BOARD_SIZE; j++)
 			if (board[i][j] == 0 && is_around(i, j)) {
 				possible_move = { i,j };
 				possible_moves.push(possible_move);
-			}//Èç¹ûÊÇ¿Õµã¶øÇÒÖÜÎ§°Ë¸ñÄÚÓÐÂä×Ó£¬½«Æä×÷Îª¿ÉÄÜµÄÒÆ¶¯ÈëÕ»
+			}//ï¿½ï¿½ï¿½ï¿½Ç¿Õµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Î§ï¿½Ë¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½Üµï¿½ï¿½Æ¶ï¿½ï¿½ï¿½Õ»
 	Command next_move;
-	while (!possible_moves.empty()) {//É¨ÃèÕ»ÖÐÃ¿Ò»¸ö¿ÉÄÜµÄÂä×Óµã£¬ÇóÆä·ÖÊý²¢²åÈëmultimapÖÐ
+	while (!possible_moves.empty()) {//É¨ï¿½ï¿½Õ»ï¿½ï¿½Ã¿Ò»ï¿½ï¿½ï¿½ï¿½ï¿½Üµï¿½ï¿½ï¿½ï¿½Óµã£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½multimapï¿½ï¿½
 		next_move = possible_moves.top();
 		int point_score = evaluate_point(next_move);
 		ordered_possible_moves.insert(pair<int, Command>(point_score, next_move));
@@ -393,22 +394,22 @@ multimap<int, Command, greater<int>> generate_possible_moves() {
 	}
 	multimap<int, Command, greater<int>> ans;
 	auto best_move = ordered_possible_moves.begin();
-	for (int i = 0; i < 5 && best_move != ordered_possible_moves.end(); i++) {//±éÀúÇ°Îå¸öµã£¬·µ»Ø´¢´æËûÃÇµÄ°´·ÖÊý½µÐòÅÅÁÐµÄmultimap
+	for (int i = 0; i < 5 && best_move != ordered_possible_moves.end(); i++) {//ï¿½ï¿½ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½ã£¬ï¿½ï¿½ï¿½Ø´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÇµÄ°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ðµï¿½multimap
 		ans.insert(*best_move);
 		best_move++;
 	}
 	return ans;
 }
-/*Ö»ËÑÒ»²ã£¬ÕÒ³ö¿ÉÄÜÂä×ÓµãÖÐ·ÖÊý×î¸ßµÄ²¢½«Ëü·µ»Ø*/
+/*Ö»ï¿½ï¿½Ò»ï¿½ã£¬ï¿½Ò³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ï¿½Ð·ï¿½ï¿½ï¿½ï¿½ï¿½ßµÄ²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 Command single_max() {
 	Command choice = generate_possible_moves().begin()->second;
 	return choice;
 }
-/*µÐ·½Âä×Ó*/
+/*ï¿½Ð·ï¿½ï¿½ï¿½ï¿½ï¿½*/
 void place(Command cmd) {
 	board[cmd.x][cmd.y] = enemy_flag;
 }
-/*³õÊ¼»¯¹¤×÷*/
+/*ï¿½ï¿½Ê¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 void start() {
 	cont = 0;
 	memset(board, 0, sizeof(board));
@@ -422,14 +423,14 @@ void start() {
 	put_white(6, 9);
 	enemy_flag = 3 - my_flag;
 }
-/*¸Ã¼º·½ÐÐ¶¯£¬µ÷ÓÃº¯ÊýÇó³ö×î¼ÑµãÎ»²¢Âä×Ó*/
+/*ï¿½Ã¼ï¿½ï¿½ï¿½ï¿½Ð¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãºï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ñµï¿½Î»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½*/
 void turn() {
 	Command my_move = single_max();
 	int x = my_move.x, y = my_move.y;
 	board[x][y] = my_flag;
 	
 
-	outtextxy(0, CELL_SIZE / 2, _T("ÎÒµÄÂä×ÓµãÎ»:"));
+	outtextxy(0, CELL_SIZE / 2, _T("ï¿½Òµï¿½ï¿½ï¿½ï¿½Óµï¿½Î»:"));
 	outtextxy(int(3.25 * CELL_SIZE), CELL_SIZE / 2, change(x));
 	outtextxy(int(3.75 * CELL_SIZE), CELL_SIZE / 2, change(y));
 
@@ -445,10 +446,10 @@ void turn() {
 	if (y == 11) result += "11 TURN";
 	
 	if (OpenClipboard(NULL)) {
-		// Çå¿Õ¼ôÇÐ°åÄÚÈÝ
+		// ï¿½ï¿½Õ¼ï¿½ï¿½Ð°ï¿½ï¿½ï¿½ï¿½ï¿½
 		EmptyClipboard();
 
-		// ·ÖÅäÈ«¾ÖÄÚ´æ£¬²¢½«Êý¾Ý¸´ÖÆ½øÈ¥
+		// ï¿½ï¿½ï¿½ï¿½È«ï¿½ï¿½ï¿½Ú´æ£¬ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý¸ï¿½ï¿½Æ½ï¿½È¥
 		HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, result.size() + 1);
 		if (hMem != NULL) {
 			LPVOID pData = GlobalLock(hMem);
@@ -456,12 +457,12 @@ void turn() {
 				memcpy(pData, result.c_str(), result.size() + 1);
 				GlobalUnlock(hMem);
 
-				// ½«Êý¾ÝÉèÖÃµ½¼ôÇÐ°å
+				// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ï¿½Ð°ï¿½
 				SetClipboardData(CF_TEXT, hMem);
 			}
 		}
 
-		// ¹Ø±Õ¼ôÇÐ°å
+		// ï¿½Ø±Õ¼ï¿½ï¿½Ð°ï¿½
 		CloseClipboard();
 	}
 	if (my_flag == black)
@@ -471,19 +472,19 @@ void turn() {
 	cont++;
 }
 
-/*¸ù¾ÝÖ¸Áîµ÷ÓÃºÏÊÊµÄº¯Êý*/
+/*ï¿½ï¿½ï¿½ï¿½Ö¸ï¿½ï¿½ï¿½ï¿½Ãºï¿½ï¿½ÊµÄºï¿½ï¿½ï¿½*/
 void loop() {
 	setbkcolor(BLACK);
 	settextcolor(WHITE);
 	outtextxy(9 * CELL_SIZE, CELL_SIZE, _T("        "));
-	outtextxy(9 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("²¿ÏìÍèÀ±"));
+	outtextxy(9 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
 	outtextxy(9 * CELL_SIZE, 2 * CELL_SIZE, _T("        "));
 	ExMessage msg;
 	while (1) {
 		msg = getmessage(EX_MOUSE);
 		if (CELL_SIZE < msg.x && msg.x < 13 * CELL_SIZE && 3 * CELL_SIZE < msg.y && msg.y < 15 * CELL_SIZE) {
 			if (msg.message == WM_LBUTTONDOWN) {
-				//ÈËÂä×Ó£¨Ä£ÄâµÐ·½£©
+				//ï¿½ï¿½ï¿½ï¿½ï¿½Ó£ï¿½Ä£ï¿½ï¿½Ð·ï¿½ï¿½ï¿½
 				int x = msg.x / CELL_SIZE - 1;
 				int y = msg.y / CELL_SIZE;
 				if (board[y - 3][x] != nothing) {
@@ -505,7 +506,7 @@ void loop() {
 			setbkcolor(WHITE);
 			settextcolor(BLACK);
 			outtextxy(9 * CELL_SIZE, CELL_SIZE, _T("        "));
-			outtextxy(9 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("²¿ÏìÍèÀ±"));
+			outtextxy(9 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
 			outtextxy(9 * CELL_SIZE, 2 * CELL_SIZE, _T("        "));
 			if (msg.message == WM_LBUTTONDOWN) {
 				status = 1;
@@ -518,13 +519,13 @@ void loop() {
 			setbkcolor(BLACK);
 			settextcolor(WHITE);
 			outtextxy(9 * CELL_SIZE, CELL_SIZE, _T("        "));
-			outtextxy(9 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("²¿ÏìÍèÀ±"));
+			outtextxy(9 * CELL_SIZE, int(1.5 * CELL_SIZE), _T("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½"));
 			outtextxy(9 * CELL_SIZE, 2 * CELL_SIZE, _T("        "));
 		}
 	}
 }
 
-/*mainº¯Êý*/
+/*mainï¿½ï¿½ï¿½ï¿½*/
 int main(int argc, char* argv[]) {
 	while (1) {
 		draw_board();
